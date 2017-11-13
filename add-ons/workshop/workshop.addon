@@ -13,7 +13,8 @@ docker pull osevg/workshopper
 echo Images have already been pulled. Now let's intall the workshop
 
 oc adm new-project workshop
-oc new-app osevg/workshopper -e WORKSHOPS_URLS=https://raw.githubusercontent.com/osevg/workshopper-content/master/_workshops/training.yml -e CONSOLE_ADDRESS=#{ip}:8443 -e ROUTER_ADDRESS=#{routing-suffix} -e USER_NAME=developer -e USER_PASSWORD=developer -e EXPLORE_PROJECT_NAME=myproject -e USER_SUFFIX= --name workshop -n workshop
+oc new-app osevg/workshopper:ruby -e CONTENT_URL_PREFIX=https://raw.githubusercontent.com/osevg/workshopper-content/36 -e WORKSHOPS_URLS=https://raw.githubusercontent.com/osevg/workshopper-content/36/_workshops/training.yml -e  CONSOLE_ADDRESS=#{ip}:8443 -e ROUTER_ADDRESS=#{routing-suffix} -e USER_NAME=developer -e USER_PASSWORD=developer -e EXPLORE_PROJECT_NAME=myproject -e USER_SUFFIX= --name workshop -n workshop
+
 # Cancel is required as I want to add a probe
 sleep 2
 oc rollout cancel dc/workshop -n workshop
@@ -24,8 +25,8 @@ oc rollout status dc/workshop -n workshop
 echo You have installed #{addon-name}
 echo To access the #{addon-name} go to http://workshop.#{routing-suffix}
 echo or
-echo Use minishift: 
+echo Use minishift:
 echo     minishift openshift service workshop -n workshop
-echo 
+echo
 echo To delete:
 echo     oc delete project/workshop --as=system:admin
